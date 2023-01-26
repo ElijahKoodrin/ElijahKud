@@ -1,0 +1,39 @@
+[
+    {
+        "id": 1,
+        "name": {
+            "first": "Илья",
+            "last": "Кудрин",
+            "father": "Олегович"
+        },
+        "email": "elijahkoodr@gmail.com",
+        "friends": [
+            2
+        ]
+    },
+    {
+        "id": 2,
+        "name": {
+            "first": "Александр",
+            "last": "Соколов",
+            "father": "Максимович"
+        },
+        "email": "sokolSanya@gmail.com",
+        "friends": [
+            3
+        ]
+    },
+    {
+        "id": 3,
+        "name": {
+            "first": "Иванов",
+            "last": "Иван",
+            "father": "Иванович"
+        },
+        "email": "tripleIvan@mail.ru",
+        "friends": [
+            2,
+            1
+        ]
+    }
+]
