@@ -21,7 +21,7 @@
             </div>
             <div v-if="addingFriend" class="addingFriend">
                 <select name="addFriend" id="" v-model="addFriendVal">
-                    <option :value="notFriend.id" v-for="notFriend in notFriends" :key="notFriend.id">{{ notFriend.name.last }} {{ notFriend.name.first }} {{notFriend.name.last}}</option>
+                    <option :value="notFriend.id" v-for="notFriend in notFriends" :key="notFriend.id">{{ notFriend.name.last }} {{ notFriend.name.first }} {{notFriend.name.father}}</option>
                 </select>
             </div>
             <button class="friends_list add" @click="addFriendI(addFriendVal)">Добавить друга</button>
