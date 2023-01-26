@@ -5,7 +5,7 @@
                 <div class="employee__name">{{ employee.name.first }}</div>
                 <div class="employee__name">{{ employee.name.father }}</div>
             </div>
-            <a class="employee__email" @click.prevent="`mailto: ${employee.email}`">{{ employee.email }}</a>
+            <a class="employee__email" @click.prevent="mail()">{{ employee.email }}</a>
             <div class="employee__friends">Друзья: {{ employee.friends.length }}</div>
             <button class="employee__button delete" @click.prevent="deleteEmployee(employee.id)"><i class="fa-regular fa-trash-can"></i></button>
             <button class="employee__button edit" @click.prevent="editing = true"><i class="fa-solid fa-user-pen"></i></button>
@@ -49,6 +49,9 @@ export default {
                 this.employee = newEm
                 this.editing = false
             }
+        },
+        mail(){
+            window.location.href = 'mailto:' + this.employee.email
         }
     }, 
     computed: {
