@@ -14,7 +14,7 @@
                 <router-link
                 :to="`/employee/${friend.id}`"
                 class="friends-list friend"
-                v-for="friend in friends()"
+                v-for="friend in friends"
                 :key="friend.id">
                 {{ friend.name.last }} {{ friend.name.first }} {{ friend.name.father }}
                 <i class="fa-solid fa-user-xmark" @click.prevent="deleteFriendI(friend.id)"></i>
@@ -22,8 +22,7 @@
             </div>
             <div v-if="addingFriend" class="addingFriend">
                 <select name="addFriend" id="" v-model="addFriendVal">
-<!--                  review посмотри как я сделал-->
-                    <option :value="notFriend.id" v-for="notFriend in newNotFriends" :key="notFriend.id">
+                    <option :value="notFriend.id" v-for="notFriend in notFriends" :key="notFriend.id">
                       {{ notFriend.name.last }} {{ notFriend.name.first }} {{notFriend.name.father}}
                     </option>
                 </select>
@@ -47,15 +46,10 @@ import store from '../store/index'
             }
         },
         methods:{
-          //review удаляй лишний код!
-            log(string){
-                console.log(string)
-            },
             deleteFriendI(id){
                 store.dispatch('deleteFriend', {id: id, employee: this.employee})
             },
             addFriendI(id){
-              //review Зачем этот if
                 if (this.addingFriend){
                     store.dispatch('addFriend', {id: id, employee: this.employee})
                     this.addingFriend = false
@@ -64,18 +58,17 @@ import store from '../store/index'
                     this.addingFriend = true
                 }
             },
-            friends(isFriends = true) {
-                return store.getters.friends(this.$route.params.id, isFriends)
-            }
         },
         computed: {
             employee()  {
                 return store.getters.employee(this.$route.params.id)
             },
-          //review Посмотри как я сделал!
-          newNotFriends() {
-            return store.getters.friends(this.$route.params.id, false)
-          }
+            notFriends() {
+                return store.getters.friends(this.$route.params.id, false)
+            },
+            friends(){
+                return store.getters.friends(this.$route.params.id, true)
+            }
 
         }
     }

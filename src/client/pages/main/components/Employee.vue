@@ -13,81 +13,74 @@
 
         <form  class="employee-list employee" v-else>
             <div class="employee__name">
-                <input  type="text" v-model="employeeToEdit.Last" placeholder="Фамилия" class="employee__name" required>
-                <input type="text" v-model="employeeToEdit.First" placeholder="Имя" class="employee__name" required>
-                <input type="text" v-model="employeeToEdit.Father" placeholder="Отчество" class="employee__name">
+                <input  type="text" v-model="employee.name.last" placeholder="Фамилия" class="employee__name" required>
+                <input type="text" v-model="employee.name.first" placeholder="Имя" class="employee__name" required>
+                <input type="text" v-model="employee.name.father" placeholder="Отчество" class="employee__name">
             </div>
-            <input type="email" v-model="employeeToEdit.Mail" placeholder="Электронная почта" class="employee__name" required>
+            <input type="email" v-model="employee.email" placeholder="Электронная почта" class="employee__name" required>
             <button @click.prevent="updateEmployeeI()" type="submit" class="employee__button confirm"><i class="fa-regular fa-circle-check"></i></button>
         </form>
 </template>
 
 <script>
-//review зачем этот импорт?
-import { mapActions, mapGetters } from 'vuex'
 import validate from "../utils/validate.js"
 import store from '../store/index'
 
 
 export default {
     name: "employee",
-    props: ["employee"],
     data(){
         return{
-            editing: false,
-            employeeToEdit: {
-                First: this.employee.name.first,
-                Last: this.employee.name.last,
-                Father: this.employee.name.father,
-                Mail: this.employee.email,
-            }
+            editing: false           
         }
     },
     methods:{
-      //review удаляй комментарии!
-        // ...mapActions(['deleteEmployee']),
         deleteEmployee(){
+            console.log(this.employee)
             store.dispatch('deleteEmployee', this.employee.id)
         },
         updateEmployeeI(){
-          //review зачем этот if? у тебя разве откуда то ещё это может вызваться?
-            if (this.editing){
-
                 let name = {
-                    first: this.employeeToEdit.First,
-                    last: this.employeeToEdit.Last,
-                    father: this.employeeToEdit.Father
+                    first: this.employee.name.first,
+                    last: this.employee.name.last,
+                    father: this.employee.name.father
                 }
-                //<!--rewive вот как делается валидация https://v2.vuejs.org/v2/cookbook/form-validation.html--> так и сделай
                 if (
-                    validate.validateEmail(this.employeeToEdit.Mail)
+                    validate.validateEmail(this.employee.email)
                     &&
                     validate.validateName(name))
                 {
-                    store.dispatch('updateEmployee', {
-                        id: this.employee.id,
-                        name: name,
-                        email: this.employeeToEdit.Mail,
-                        friends: this.employee.friends
-                    })
-                    //review думаю это нахуй не надо по идее должен быть гетер!
                     this.employee = {
                         id: this.employee.id,
                         name: name,
-                        email: this.employeeToEdit.Mail,
+                        email: this.employee.email,
                         friends: this.employee.friends
                     }
                     this.editing = false
                 }
-            }
-            else{
-
-            }
         },
         mail(){
-          //review предирка но посмотри но можно ещё писать вот так напиши мне в вотс ап как это называется! мой синтаксис:
-          //   window.location.href = 'mailto:' + this.employee.email
-            window.location.href = `mailto${this.employee.email}`
+            window.location.href = `mailto: ${this.employee.email}`
+        }
+    },
+    computed: {
+        employee: {
+            get(){
+                let employee = store.getters.employee(this.$vnode.key)
+                return {
+                    id: employee.id,
+                    friends: employee.friends,
+                    email: employee.email,
+                    name: {
+                        first: employee.name.first,
+                        last: employee.name.last,
+                        father: employee.name.father
+                    }
+                }
+            },
+            set(value){
+                store.dispatch('updateEmployee', value)
+            }
         }
     }
 }

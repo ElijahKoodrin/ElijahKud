@@ -4,7 +4,7 @@
 Duplicate keys detected: '3'. This may cause an update error.
 
 -->
-            <Employee v-for="employee in allEmployees" :employee="employee" :key="employee.id" />
+            <Employee v-for="employee in allEmployees" :id="employee.id" :key="employee.id" />
         </div>
 </template>
 
