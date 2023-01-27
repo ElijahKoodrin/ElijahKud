@@ -13,7 +13,7 @@
                 <router-link 
                 :to="`/employee/${friend.id}`" 
                 class="friends-list friend" 
-                v-for="friend in friends" 
+                v-for="friend in friends()" 
                 :key="friend.id">
                 {{ friend.name.last }} {{ friend.name.first }} {{ friend.name.father }} 
                 <i class="fa-solid fa-user-xmark" @click.prevent="deleteFriendI(friend.id)"></i>
@@ -21,7 +21,7 @@
             </div>
             <div v-if="addingFriend" class="addingFriend">
                 <select name="addFriend" id="" v-model="addFriendVal">
-                    <option :value="notFriend.id" v-for="notFriend in notFriends" :key="notFriend.id">{{ notFriend.name.last }} {{ notFriend.name.first }} {{notFriend.name.father}}</option>
+                    <option :value="notFriend.id" v-for="notFriend in friends(false)" :key="notFriend.id">{{ notFriend.name.last }} {{ notFriend.name.first }} {{notFriend.name.father}}</option>
                 </select>
             </div>
             <button class="friends_list add" @click="addFriendI(addFriendVal)">Добавить друга</button>
@@ -32,58 +32,39 @@
 
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import store from '../store/index'
 
     export default {
         name: "employee-view",
-        props: ['employees'],
         data(){
             return{
                 addingFriend: false,
-                addFriendVal: 0
+                addFriendVal: 0,
             }
         },
         methods:{
             log(string){
                 console.log(string)
             },
-            ...mapActions(['deleteFriend', 'addFriend']),
             deleteFriendI(id){
-                this.deleteFriend({id: id, employee: this.employee})
+                store.dispatch('deleteFriend', {id: id, employee: this.employee})
             },
             addFriendI(id){
                 if (this.addingFriend){
-                    this.addFriend({id: id, employee: this.employee})
+                    store.dispatch('addFriend', {id: id, employee: this.employee})
                     this.addingFriend = false
                 }
                 else{
                     this.addingFriend = true
                 }
+            },
+            friends(isFriends = true) {
+                return store.getters.friends(this.$route.params.id, isFriends)
             }
         },
         computed: {
-            ...mapGetters(["allEmployees"]),
-            /* TODO: вынести всё в гетеры!!!*/
             employee()  {
-                return this.allEmployees.find(e => e.id == this.$route.params.id)
-            },
-            friends() {
-                let list = []
-                for (let worker of this.allEmployees){
-                    if (this.employee.friends.includes(worker.id)){
-                        list.push(worker)
-                    }
-                }
-                return list
-            },
-            notFriends(){
-                let list = []
-                for (let worker of this.allEmployees) {
-                    if (!(this.employee.friends.includes(worker.id)) && worker.id != this.employee.id) {
-                        list.push(worker)
-                    }
-                }
-                return list
+                return store.getters.employee(this.$route.params.id)
             }
         }
     }

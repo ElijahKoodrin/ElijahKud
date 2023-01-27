@@ -7,7 +7,7 @@
             </div>
             <a class="employee__email" @click.prevent="mail()">{{ employee.email }}</a>
             <p class="employee__friends">Друзья: {{ employee.friends.length }}</p>
-            <button class="employee__button delete" @click.prevent="deleteEmployee(employee.id)"><i class="fa-regular fa-trash-can"></i></button>
+            <button class="employee__button delete" @click.prevent="deleteEmployee"><i class="fa-regular fa-trash-can"></i></button>
             <button class="employee__button edit" @click.prevent="editing = true"><i class="fa-solid fa-user-pen"></i></button>
         </router-link>
 
@@ -26,6 +26,8 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import validate from "../utils/validate.js"
+import store from '../store/index'
+
 
 export default {
     name: "employee",
@@ -42,8 +44,10 @@ export default {
         }
     },
     methods:{
-        ...mapActions(['deleteEmployee', 'updateEmployee']),
-        ...mapGetters(["allEmployees"]),
+        // ...mapActions(['deleteEmployee']),
+        deleteEmployee(){
+            store.dispatch('deleteEmployee', employee.id)
+        },
         updateEmployeeI(){
             if (this.editing){
 
@@ -57,7 +61,7 @@ export default {
                     &&
                     validate.validateName(name))
                 {
-                    this.updateEmployee({
+                    store.dispatch('updateEmployee', {
                         id: this.employee.id,
                         name: name,
                         email: this.employeeToEdit.Mail,
@@ -73,14 +77,12 @@ export default {
                 }
             }
             else{
-                return
+                
             }
         },
         mail(){
             window.location.href = 'mailto:' + this.employee.email
         }
-    }, 
-    computed: {
     }
 }
 </script>

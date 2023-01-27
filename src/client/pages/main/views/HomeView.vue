@@ -5,8 +5,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import store from '../store/index'
 import Employee from "../components/Employee.vue"
+
 export default {
     name: 'home-view',
     components: {
@@ -18,7 +19,9 @@ export default {
     },
     props: ['employees'],
     computed:{
-        ...mapGetters(["allEmployees"])
+        allEmployees(){
+            return store.getters.allEmployees
+        }
     }
 }
 </script>

@@ -44,6 +44,26 @@ export default new Vuex.Store({
     },
     getters: {
         allEmployees: (state) => state.employees,
+        employee: (state) => (id) => {
+            return state.employees.find(e => e.id == id)
+        },
+        friends: (state, getters) => (id, isFriends) => {
+            let list = []
+            let employee = getters.employee(id)
+            let allEmployees = getters.allEmployees
+            for (let worker of allEmployees) {
+                if (isFriends) {
+                    if (employee.friends.includes(worker.id)) {
+                        list.push(worker)
+                    }
+                } else {
+                    if (!(employee.friends.includes(worker.id)) && worker.id != employee.id) {
+                        list.push(worker)
+                    }
+                }
+            }
+            return list
+        }
     },
     actions: {
         addEmployee({ commit }, employee) {

@@ -11,9 +11,10 @@
 </template>
 
 <script>
-
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
+import store from '../store/index'
 import validate from "../utils/validate.js"
+
 export default {
     name: 'add-employee',
     data() {
@@ -25,7 +26,6 @@ export default {
         }
     },
     methods: {
-        ...mapActions(["addEmployee"]),
         addEmployeeI(){
             if (
                 validate.validateEmail(this.employeeMail) 
@@ -37,7 +37,8 @@ export default {
                 })
             )
             {
-                this.addEmployee({
+                store.dispatch('addEmployee',
+                    {
                     id: this.allEmployees.length === 0 ? 1 : this.allEmployees.length + 1,
                     email: this.employeeMail,
                     name: {
