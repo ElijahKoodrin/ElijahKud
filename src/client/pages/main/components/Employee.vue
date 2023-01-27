@@ -11,10 +11,9 @@
             <button class="employee__button edit" @click.prevent="editing = true"><i class="fa-solid fa-user-pen"></i></button>
         </router-link>
 
-
-        <form class="employee-list employee" v-else>
+        <form  class="employee-list employee" v-else>
             <div class="employee__name">
-                <input type="text" v-model="employeeToEdit.Last" placeholder="Фамилия" class="employee__name" required>
+                <input  type="text" v-model="employeeToEdit.Last" placeholder="Фамилия" class="employee__name" required>
                 <input type="text" v-model="employeeToEdit.First" placeholder="Имя" class="employee__name" required>
                 <input type="text" v-model="employeeToEdit.Father" placeholder="Отчество" class="employee__name">
             </div>
@@ -24,6 +23,7 @@
 </template>
 
 <script>
+//review зачем этот импорт?
 import { mapActions, mapGetters } from 'vuex'
 import validate from "../utils/validate.js"
 import store from '../store/index'
@@ -44,11 +44,13 @@ export default {
         }
     },
     methods:{
+      //review удаляй комментарии!
         // ...mapActions(['deleteEmployee']),
         deleteEmployee(){
             store.dispatch('deleteEmployee', this.employee.id)
         },
         updateEmployeeI(){
+          //review зачем этот if? у тебя разве откуда то ещё это может вызваться?
             if (this.editing){
 
                 let name = {
@@ -56,6 +58,7 @@ export default {
                     last: this.employeeToEdit.Last,
                     father: this.employeeToEdit.Father
                 }
+                //<!--rewive вот как делается валидация https://v2.vuejs.org/v2/cookbook/form-validation.html--> так и сделай
                 if (
                     validate.validateEmail(this.employeeToEdit.Mail)
                     &&
@@ -67,6 +70,7 @@ export default {
                         email: this.employeeToEdit.Mail,
                         friends: this.employee.friends
                     })
+                    //review думаю это нахуй не надо по идее должен быть гетер!
                     this.employee = {
                         id: this.employee.id,
                         name: name,
@@ -77,11 +81,13 @@ export default {
                 }
             }
             else{
-                
+
             }
         },
         mail(){
-            window.location.href = 'mailto:' + this.employee.email
+          //review предирка но посмотри но можно ещё писать вот так напиши мне в вотс ап как это называется! мой синтаксис:
+          //   window.location.href = 'mailto:' + this.employee.email
+            window.location.href = `mailto${this.employee.email}`
         }
     }
 }

@@ -1,8 +1,9 @@
 <template>
+<!--  валидация формы не верно -->
     <form style="margin-top: 20px; display: flex; align-items:center; justify-content: center; flex-direction: column">
         <div class="name">
             <input type="text" placeholder="Фамилия" v-model="employeeLast" required>
-            <input type="text" placeholder="Имя" v-model="employeeFirst" required> 
+            <input type="text" placeholder="Имя" v-model="employeeFirst" required>
             <input type="text" placeholder="Отчество" v-model="employeeFather">
         </div>
         <input type="email" placeholder="email" v-model="employeeMail" required>
@@ -28,7 +29,7 @@ export default {
     methods: {
         addEmployeeI(){
             if (
-                validate.validateEmail(this.employeeMail) 
+                validate.validateEmail(this.employeeMail)
                 &&
                 validate.validateName({
                     last: this.employeeLast,

@@ -1,5 +1,9 @@
 <template>
         <div class="employee-list">
+<!--          плохо использовать id при удалении из массива ты получаешь warning разберись с ним
+Duplicate keys detected: '3'. This may cause an update error.
+
+-->
             <Employee v-for="employee in allEmployees" :employee="employee" :key="employee.id" />
         </div>
 </template>

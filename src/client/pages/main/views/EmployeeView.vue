@@ -1,6 +1,7 @@
 <template>
     <div class="employee">
         <div class="left">
+<!--          review мне кажется что можно насоздавать мини компонентов и их использовать! ибо у тебя код ниже встречается часто!-->
             <div class="name">
                 <div class="name_child">Фамилия: <span>{{ employee.name.last }}</span></div>
                 <div class="name_child">Имя: <span>{{ employee.name.first }}</span></div>
@@ -9,19 +10,22 @@
             <a class="email" :href="`mailto: ${employee.email}`">E-mail: <span>{{ employee.email }}</span></a>
         </div>
         <div class="friends-list right"> Друзья:
-            <div v-if="employee.friends.length > 0"> 
-                <router-link 
-                :to="`/employee/${friend.id}`" 
-                class="friends-list friend" 
-                v-for="friend in friends()" 
+            <div v-if="employee.friends.length > 0">
+                <router-link
+                :to="`/employee/${friend.id}`"
+                class="friends-list friend"
+                v-for="friend in friends()"
                 :key="friend.id">
-                {{ friend.name.last }} {{ friend.name.first }} {{ friend.name.father }} 
+                {{ friend.name.last }} {{ friend.name.first }} {{ friend.name.father }}
                 <i class="fa-solid fa-user-xmark" @click.prevent="deleteFriendI(friend.id)"></i>
                 </router-link>
             </div>
             <div v-if="addingFriend" class="addingFriend">
                 <select name="addFriend" id="" v-model="addFriendVal">
-                    <option :value="notFriend.id" v-for="notFriend in friends(false)" :key="notFriend.id">{{ notFriend.name.last }} {{ notFriend.name.first }} {{notFriend.name.father}}</option>
+<!--                  review посмотри как я сделал-->
+                    <option :value="notFriend.id" v-for="notFriend in newNotFriends" :key="notFriend.id">
+                      {{ notFriend.name.last }} {{ notFriend.name.first }} {{notFriend.name.father}}
+                    </option>
                 </select>
             </div>
             <button class="friends_list add" @click="addFriendI(addFriendVal)">Добавить друга</button>
@@ -43,6 +47,7 @@ import store from '../store/index'
             }
         },
         methods:{
+          //review удаляй лишний код!
             log(string){
                 console.log(string)
             },
@@ -50,6 +55,7 @@ import store from '../store/index'
                 store.dispatch('deleteFriend', {id: id, employee: this.employee})
             },
             addFriendI(id){
+              //review Зачем этот if
                 if (this.addingFriend){
                     store.dispatch('addFriend', {id: id, employee: this.employee})
                     this.addingFriend = false
@@ -65,7 +71,12 @@ import store from '../store/index'
         computed: {
             employee()  {
                 return store.getters.employee(this.$route.params.id)
-            }
+            },
+          //review Посмотри как я сделал!
+          newNotFriends() {
+            return store.getters.friends(this.$route.params.id, false)
+          }
+
         }
     }
 </script>
