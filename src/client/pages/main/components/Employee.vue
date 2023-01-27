@@ -7,7 +7,7 @@
             </div>
             <a class="employee__email" @click.prevent="mail()">{{ employee.email }}</a>
             <p class="employee__friends">Друзья: {{ employee.friends.length }}</p>
-            <button class="employee__button delete" @click.prevent="deleteEmployee"><i class="fa-regular fa-trash-can"></i></button>
+            <button class="employee__button delete" @click.prevent="deleteEmployee()"><i class="fa-regular fa-trash-can"></i></button>
             <button class="employee__button edit" @click.prevent="editing = true"><i class="fa-solid fa-user-pen"></i></button>
         </router-link>
 
@@ -46,7 +46,7 @@ export default {
     methods:{
         // ...mapActions(['deleteEmployee']),
         deleteEmployee(){
-            store.dispatch('deleteEmployee', employee.id)
+            store.dispatch('deleteEmployee', this.employee.id)
         },
         updateEmployeeI(){
             if (this.editing){
