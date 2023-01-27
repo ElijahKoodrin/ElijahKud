@@ -7,6 +7,7 @@
             <input type="text" placeholder="Отчество" v-model="employeeFather">
         </div>
         <input type="email" placeholder="email" v-model="employeeMail" required>
+        <button @click="cancelAddition" class="cancel">Отмена</button>
         <button @click="addEmployeeI" class="add">Добавить</button>
     </form>
 </template>
@@ -27,6 +28,9 @@ export default {
         }
     },
     methods: {
+        cancelAddition(){
+            this.$emit('added')
+        },
         addEmployeeI(){
             if (
                 validate.validateEmail(this.employeeMail)
