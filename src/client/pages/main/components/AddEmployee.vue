@@ -10,6 +10,7 @@
         <button @click="cancelAddition" class="cancel">Отмена</button>
         <button @click="addEmployeeI" class="add">Добавить</button>
     </form>
+
 </template>
 
 <script>
