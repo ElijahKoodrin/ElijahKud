@@ -1,31 +1,32 @@
 <template>
         <router-link :to="`/employee/${employee.id}`" class="employee-list employee" v-if="!editing">
             <div class="employee__name" >
-                <div class="employee__name">{{ employee.name.last }}</div>
-                <div class="employee__name">{{ employee.name.first }}</div>
-                <div class="employee__name">{{ employee.name.father }}</div>
+                <p>{{ employee.name.last }}</p>
+                <p>{{ employee.name.first }}</p>
+                <p>{{ employee.name.father }}</p>
             </div>
             <a class="employee__email" @click.prevent="mail()">{{ employee.email }}</a>
-            <div class="employee__friends">Друзья: {{ employee.friends.length }}</div>
+            <p class="employee__friends">Друзья: {{ employee.friends.length }}</p>
             <button class="employee__button delete" @click.prevent="deleteEmployee(employee.id)"><i class="fa-regular fa-trash-can"></i></button>
             <button class="employee__button edit" @click.prevent="editing = true"><i class="fa-solid fa-user-pen"></i></button>
         </router-link>
 
 
-        <div class="employee-list employee" v-else>
+        <form class="employee-list employee" v-else>
             <div class="employee__name">
-                <input type="text" v-model="employeeToEdit.Last" placeholder="Фамилия" class="employee__name">
-                <input type="text" v-model="employeeToEdit.First" placeholder="Имя" class="employee__name">
+                <input type="text" v-model="employeeToEdit.Last" placeholder="Фамилия" class="employee__name" required>
+                <input type="text" v-model="employeeToEdit.First" placeholder="Имя" class="employee__name" required>
                 <input type="text" v-model="employeeToEdit.Father" placeholder="Отчество" class="employee__name">
             </div>
-            <input type="email" v-model="employeeToEdit.Mail" placeholder="Электронная почта" class="employee__name">
-            <button @click="updateEmployeeI(updated)" class="employee__button confirm"><i class="fa-regular fa-circle-check"></i></button>
-        </div>
+            <input type="email" v-model="employeeToEdit.Mail" placeholder="Электронная почта" class="employee__name" required>
+            <button @click.prevent="updateEmployeeI()" type="submit" class="employee__button confirm"><i class="fa-regular fa-circle-check"></i></button>
+        </form>
 </template>
 
 <script>
-// import { get } from 'http'
 import { mapActions, mapGetters } from 'vuex'
+import validate from "../utils/validate.js"
+
 export default {
     name: "employee",
     props: ["employee"],
@@ -43,11 +44,36 @@ export default {
     methods:{
         ...mapActions(['deleteEmployee', 'updateEmployee']),
         ...mapGetters(["allEmployees"]),
-        updateEmployeeI(newEm){
+        updateEmployeeI(){
             if (this.editing){
-                this.updateEmployee(newEm )
-                this.employee = newEm
-                this.editing = false
+
+                let name = {
+                    first: this.employeeToEdit.First,
+                    last: this.employeeToEdit.Last,
+                    father: this.employeeToEdit.Father
+                }
+                if (
+                    validate.validateEmail(this.employeeToEdit.Mail)
+                    &&
+                    validate.validateName(name))
+                {
+                    this.updateEmployee({
+                        id: this.employee.id,
+                        name: name,
+                        email: this.employeeToEdit.Mail,
+                        friends: this.employee.friends
+                    })
+                    this.employee = {
+                        id: this.employee.id,
+                        name: name,
+                        email: this.employeeToEdit.Mail,
+                        friends: this.employee.friends
+                    }
+                    this.editing = false
+                }
+            }
+            else{
+                return
             }
         },
         mail(){
@@ -55,38 +81,6 @@ export default {
         }
     }, 
     computed: {
-        updated(){
-            return {
-                id: this.employee.id,
-                name: {
-                    first: this.employeeToEdit.First,
-                    last: this.employeeToEdit.Last,
-                    father: this.employeeToEdit.Father
-                },
-                email: this.employeeToEdit.Mail,
-                friends: this.employee.friends
-            }
-        },
-        validateEmail() {
-            let regex = /^((?!\.)[\w_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/
-            let test = regex.test(this.updated.email.toString())
-            return test
-        },
-        validateName() {
-            const name = this.newEmployee.name
-
-            if (
-                name.last == "" ||
-                name.first == ""
-            )
-                return false
-            else {
-                return true
-            }
-        }
-        // employee() {
-        //     return this.allEmployees.find(e => e.id == this.$route.params.id)
-        // },
     }
 }
 </script>

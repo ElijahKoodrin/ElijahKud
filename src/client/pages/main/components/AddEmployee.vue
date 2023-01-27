@@ -13,7 +13,7 @@
 <script>
 
 import { mapActions, mapGetters } from "vuex";
-import { v1 } from "uuid";
+import validate from "../utils/validate.js"
 export default {
     name: 'add-employee',
     data() {
@@ -28,54 +28,31 @@ export default {
         ...mapActions(["addEmployee"]),
         addEmployeeI(){
             if (
-                this.validateEmail &&
-                this.validateName
-            )
-            {
-                this.addEmployee(this.newEmployee)
-                this.$emit('added')
-            }
-        }
-    },
-    computed: {
-        ...mapGetters(["allEmployees"]),
-        newId(){
-            if (this.allEmployees[this.allEmployees.length - 1] == undefined){
-                return 1
-            }
-            else{
-                return this.allEmployees[this.allEmployees.length - 1].id + 1
-            }
-        },
-        newEmployee(){
-            return {
-                id: this.newId,
-                email: this.employeeMail,
-                name: {
+                validate.validateEmail(this.employeeMail) 
+                &&
+                validate.validateName({
                     last: this.employeeLast,
                     first: this.employeeFirst,
                     father: this.employeeFather,
-                },
-                friends: []
-            }
-        },
-        validateEmail(){
-            let regex =/^((?!\.)[\w_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/
-            let test = regex.test(this.newEmployee.email.toString())
-            return test
-        },
-        validateName(){
-            const name = this.newEmployee.name
-
-            if (
-            name.last == "" ||
-            name.first == ""
+                })
             )
-            return false
-            else {
-                return true
+            {
+                this.addEmployee({
+                    id: this.allEmployees.length === 0 ? 1 : this.allEmployees.length + 1,
+                    email: this.employeeMail,
+                    name: {
+                        last: this.employeeLast,
+                        first: this.employeeFirst,
+                        father: this.employeeFather,
+                    },
+                    friends: []
+                })
+                this.$emit('added')
             }
-        }
+        },
+    },
+    computed: {
+        ...mapGetters(["allEmployees"]),
     }
 }
 </script>

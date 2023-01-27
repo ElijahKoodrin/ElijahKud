@@ -40,7 +40,7 @@ import { mapActions, mapGetters } from 'vuex'
         data(){
             return{
                 addingFriend: false,
-                addFriendVal: -1
+                addFriendVal: 0
             }
         },
         methods:{
@@ -49,12 +49,11 @@ import { mapActions, mapGetters } from 'vuex'
             },
             ...mapActions(['deleteFriend', 'addFriend']),
             deleteFriendI(id){
-                this.deleteFriend([id, this.employee])
+                this.deleteFriend({id: id, employee: this.employee})
             },
             addFriendI(id){
                 if (this.addingFriend){
-                    this.addFriend([id, this.employee])
-                    // console.log(this.employee)
+                    this.addFriend({id: id, employee: this.employee})
                     this.addingFriend = false
                 }
                 else{
@@ -64,6 +63,7 @@ import { mapActions, mapGetters } from 'vuex'
         },
         computed: {
             ...mapGetters(["allEmployees"]),
+            /* TODO: вынести всё в гетеры!!!*/
             employee()  {
                 return this.allEmployees.find(e => e.id == this.$route.params.id)
             },

@@ -47,27 +47,9 @@ export default new Vuex.Store({
     },
     actions: {
         addEmployee({ commit }, employee) {
-            commit("add_employee", employee);
+            commit("ADD_EMPLOYEE", employee);
         },
-        deleteEmployee({ commit }, id) {
-            commit("delete_employee", id);
-        },
-        updateEmployee({ commit }, employee) {
-            commit('update_employee', employee);
-        },
-        deleteFriend({ commit }, array) {
-            commit('delete_friend', array);
-        },
-        addFriend({ commit }, array) {
-            commit('add_friend', array);
-        }
-    },
-    mutations: {
-        add_employee(state, employee) {
-            state.employees.push(employee);
-            console.log(state);
-        },
-        delete_employee(state, id) {
+        deleteEmployee({ commit, state }, id) {
             for (let employee of state.employees) {
                 if (employee.id != id) {
                     let index = employee.friends.indexOf(id);
@@ -76,32 +58,41 @@ export default new Vuex.Store({
                     }
                 }
             }
+
+            commit("DELETE_EMPLOYEE", id);
+        },
+        updateEmployee({ commit }, employee) {
+            commit('UPDATE_EMPLOYEE', employee);
+        },
+        deleteFriend({ commit, state }, object) {
+            let id = state.employees.findIndex(e => e.id == object.employee.id)
+            let index = state.employees[id].friends.indexOf(object.id)
+
+            commit('DELETE_FRIEND', { id: id, index: index });
+        },
+        addFriend({ commit, state }, object) {
+            let id = state.employees.findIndex(e => e.id == object.employee.id)
+
+            commit('ADD_FRIEND', { id: id, friend: object.id });
+        }
+    },
+    mutations: {
+        ADD_EMPLOYEE(state, employee) {
+            state.employees.push(employee);
+        },
+        DELETE_EMPLOYEE(state, id) {
             state.employees = state.employees.filter(employee => employee.id != id)
         },
-        update_employee(state, employee) {
+        UPDATE_EMPLOYEE(state, employee) {
             let id = state.employees.findIndex(e => e.id == employee.id)
             state.employees[id] = employee;
-            console.log(employee);
-            console.log(state.employees[id]);
         },
-        delete_friend(state, array) {
-            let employee = array[1]
-            let id = state.employees.findIndex(e => e.id == employee.id)
-            let friendId = array[0]
-            // console.log(friendId)
-            // console.log(state.employees[id])
-            let index = state.employees[id].friends.indexOf(friendId)
-            state.employees[id].friends.splice(index, 1)
-            console.log(state)
+        DELETE_FRIEND(state, object) {
+            state.employees[object.id].friends.splice(object.index, 1)
         },
-        add_friend(state, array) {
-            // console.log(array)
+        ADD_FRIEND(state, object) {
 
-            let employee = array[1]
-            let id = state.employees.findIndex(e => e.id == employee.id)
-            let friendId = array[0]
-            state.employees[id].friends.push(friendId)
-            // console.log(friends);
+            state.employees[object.id].friends.push(object.friend)
         }
     },
     modules: {},
