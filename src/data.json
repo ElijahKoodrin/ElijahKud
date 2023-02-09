@@ -1,0 +1,80 @@
+{
+	"categories": [
+		{
+			"id": 1,
+			"name": "Авиация"
+		},
+		{
+			"id": 2,
+			"name": "Автомобили и мотоциклы"
+		},
+		{
+			"id": 3,
+			"name": "Грузовая техника"
+		},
+		{
+			"id": 4,
+			"name": "Легковая техника"
+		}
+	],
+	"manufacturer": [
+		{
+			"id": 1,
+			"name": "Advanced Modeling"
+		},
+		{
+			"id": 2,
+			"name": "Start Scale Models"
+		},
+		{
+			"id": 3,
+			"name": "Bronco"
+		},
+		{
+			"id": 4,
+			"name": "ModelGun"
+		}
+	],
+	"size": [
+		{
+			"id": 1,
+			"name": "1:72"
+		},
+		{
+			"id": 2,
+			"name": "1:35"
+		},
+		{
+			"id": 3,
+			"name": "1:43"
+		},
+		{
+			"id": 4,
+			"name": "1:32"
+		}
+	],
+	"products": [
+		{
+			"id": 1,
+			"name": "Сборная модель Экскаватор UDS-114 Tatra",
+			"price": 2499,
+			"category": 3,
+			"manufacturer": 3,
+			"size": 3,
+			"rating": 4,
+			"inStock": true,
+			"img": "UDS-114_Tatra.jpg"
+		},
+		{
+			"id": 2,
+			"name": "Сборная модель Пожарная Автоцистерна АЦ-3-40",
+			"price": 2499,
+			"category": 3,
+			"manufacturer": 1,
+			"size": 3,
+			"rating": 3.5,
+			"inStock": true,
+			"img": "AC-3-40.jpg"
+		}
+	]
+}
