@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Lab1Kotlin</string>
+    <string name="behind">Моё число больше</string>
+    <string name="hit">Вы угадали!</string>
+    <string name="ahead">Моё число меньше</string>
+    <string name="input_number">Введите число</string>
+    <string name="play_more">Сыграть ещё</string>
+    <string name="error">Ошибка</string>
+    <string name="try_to_guess">Число от 0 до 100</string>
+</resources>
