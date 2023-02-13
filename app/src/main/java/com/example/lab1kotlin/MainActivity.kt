@@ -10,7 +10,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         val textView: TextView = findViewById(R.id.textView)
         val button: Button = findViewById(R.id.button)
         val button2: Button = findViewById(R.id.buttonPlayMore)
